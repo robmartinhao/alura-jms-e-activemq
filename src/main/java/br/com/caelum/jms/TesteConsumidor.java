@@ -17,9 +17,18 @@ public class TesteConsumidor {
 
         Destination fila = (Destination) context.lookup("financeiro");
         MessageConsumer consumer = session.createConsumer(fila);
-        Message message = consumer.receive();
 
-        System.out.println("Recebendo a msg: " + message);
+        consumer.setMessageListener(new MessageListener() {
+            @Override
+            public void onMessage(Message message) {
+                TextMessage textMessage = (TextMessage) message;
+                try {
+                    System.out.println(textMessage.getText());
+                } catch (JMSException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         new Scanner(System.in).nextLine();
 
