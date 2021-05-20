@@ -4,7 +4,7 @@ import javax.jms.*;
 import javax.naming.InitialContext;
 import java.util.Scanner;
 
-public class TesteConsumidor {
+public class TesteConsumidorFila {
 
     public static void main(String[] args) throws Exception {
 

@@ -3,7 +3,7 @@ package br.com.caelum.jms;
 import javax.jms.*;
 import javax.naming.InitialContext;
 
-public class TesteProdutor {
+public class TesteProdutorFila {
 
     public static void main(String[] args) throws Exception {
 
