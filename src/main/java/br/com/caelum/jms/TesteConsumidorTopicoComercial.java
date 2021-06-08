@@ -1,7 +1,11 @@
 package br.com.caelum.jms;
 
+import br.com.caelum.modelo.Pedido;
+import org.apache.activemq.ActiveMQConnectionFactory;
+
 import javax.jms.*;
 import javax.naming.InitialContext;
+import java.io.Serializable;
 import java.util.Scanner;
 
 public class TesteConsumidorTopicoComercial {
@@ -9,7 +13,9 @@ public class TesteConsumidorTopicoComercial {
     public static void main(String[] args) throws Exception {
 
         InitialContext context = new InitialContext();
-        ConnectionFactory factory = (ConnectionFactory) context.lookup("ConnectionFactory");
+        //ConnectionFactory factory = (ConnectionFactory) context.lookup("ConnectionFactory");
+        ActiveMQConnectionFactory factory = (ActiveMQConnectionFactory) context.lookup("ConnectionFactory");
+        factory.setTrustAllPackages(true);
 
         Connection connection = factory.createConnection();
         connection.setClientID("comercial");
@@ -21,9 +27,10 @@ public class TesteConsumidorTopicoComercial {
         MessageConsumer consumer = session.createDurableSubscriber(topico, "assinatura");
 
         consumer.setMessageListener(message -> {
-            TextMessage textMessage = (TextMessage) message;
+            ObjectMessage objectMessage = (ObjectMessage) message;
             try {
-                System.out.println(textMessage.getText());
+                Pedido pedido = (Pedido) objectMessage.getObject();
+                System.out.println(pedido.getCodigo());
             } catch (JMSException e) {
                 e.printStackTrace();
             }
